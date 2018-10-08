@@ -1,2 +1,4 @@
 # prins-alfred
-revolutionizing the world and stuff
+### To run:
+
+`python pizzaball.py`

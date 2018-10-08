@@ -127,7 +127,7 @@ def listen_print_loop(responses):
 
             # Exit recognition if any of the transcribed phrases could be
             # one of our keywords.
-            if re.search(r'\b(exit|quit)\b', transcript, re.I):
+            if re.search(r'\b(exit|avsluta)\b', transcript, re.I):
                 print('Exiting..')
                 break
 
