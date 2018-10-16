@@ -2,17 +2,42 @@ from __future__ import division
 
 import re
 import sys
+import socket
+import json
 
 from google.cloud import speech
 from google.cloud.speech import enums
 from google.cloud.speech import types
 import pyaudio
 from six.moves import queue
+from pynput import keyboard
+from threading import Thread
 
 # Audio recording parameters
 RATE = 16000
 CHUNK = int(RATE / 10)  # 100ms
 
+IS_OPERATOR = True # who's talking?
+
+
+def on_press(key):
+    try:
+        x = key.char
+        if x == 's':
+            print("switching user")
+            global IS_OPERATOR
+            IS_OPERATOR = not IS_OPERATOR
+    except AttributeError as e:
+        print("Not a bug, carry on: ", e)
+
+def on_release(key):
+    print('{0} released'.format(key))
+
+def check():
+    with keyboard.Listener(
+            on_press=on_press,
+            on_release=on_release) as listener:
+        listener.join()
 
 class MicrophoneStream(object):
     """Opens a recording stream as a generator yielding the audio chunks."""
@@ -95,6 +120,15 @@ def listen_print_loop(responses):
     final one, print a newline to preserve the finalized transcription.
     """
     num_chars_printed = 0
+    json_trans = None
+    with open('gui/src/transcription.json') as f:
+        try:
+            json_trans = json.load(f)
+        except BaseException as e:
+            json_trans = []
+
+    t = Thread(target=check)
+    t.start()
     for response in responses:
         if not response.results:
             continue
@@ -123,7 +157,22 @@ def listen_print_loop(responses):
             num_chars_printed = len(transcript)
 
         else:
-            print(transcript + overwrite_chars)
+            data_t = transcript + overwrite_chars
+            print(data_t)
+
+            if (IS_OPERATOR):
+                json_trans.append({"msg": data_t, "person": 0})
+            else:
+                json_trans.append({"msg": data_t, "person": 1})
+
+
+            with open("gui/src/transcription.json", 'w') as f:
+                json.dump(json_trans, f, ensure_ascii=False)
+
+            #garbageman_db = open("gui/transcription.txt", 'a')
+            #garbageman_db.write(transcript + overwrite_chars)
+            #garbageman_db.write("\n")
+            #garbageman_db.close()
 
             # Exit recognition if any of the transcribed phrases could be
             # one of our keywords.
