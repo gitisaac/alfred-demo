@@ -21,12 +21,13 @@ IS_OPERATOR = True # who's talking?
 
 
 def on_press(key):
+    global IS_OPERATOR
     try:
-        x = key.char
-        if x == 's':
+        if key.char == 'n':
             print("switching user")
-            global IS_OPERATOR
-            IS_OPERATOR = not IS_OPERATOR
+            IS_OPERATOR = False
+        elif key.char == 'o':
+            IS_OPERATOR = True
     except AttributeError as e:
         print("Not a bug, carry on: ", e)
 
