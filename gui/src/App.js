@@ -11,6 +11,9 @@ class App extends Component {
     }
   }
 
+  
+
+
   componentDidMount() {
     let fetchData = () => {
       let new_data = require('./transcription.json');
@@ -23,10 +26,30 @@ class App extends Component {
     this.update = setInterval(fetchData, 2000)
   }
 
+highlightTxt(meg) {
+
+    var words = meg.split(" ");
+    var newBoldStr = "";
+    for (var i = 0; i < words.length; i++) {
+      if(words[i] == 'Addisons' || words[i] == 'Addison') {
+        console.log("hittar ord 'jag' ")
+        words[i] = "ADDISONS*";  
+        newBoldStr = newBoldStr + " ";
+        newBoldStr = newBoldStr + words[i];
+      } else {
+        newBoldStr = newBoldStr + " ";
+        newBoldStr = newBoldStr + words[i];
+      }
+
+    }
+
+    return(newBoldStr);
+  }
+
   fill_state(d) {
     let new_transcriptions = [];
     for(var i = 0; i < d.length; i ++) {
-      let m = new Message( {id: d[i]['person'], message: d[i]['msg']})
+        let m = new Message( {id: d[i]['person'], message: this.highlightTxt(d[i]['msg'])});
       if (d[i]['person'] == 0) {
         m['senderName'] = 'Operator'
       }else {
@@ -37,8 +60,9 @@ class App extends Component {
     this.setState({transcriptions: new_transcriptions});
   }
 
+
   render() {
-    console.log(this.state.transcriptions)
+    //console.log(this.state.transcriptions)
     return (
       <div className="App">
         <ChatFeed
@@ -52,11 +76,12 @@ class App extends Component {
             {
               text: {
                 fontWeight: 'bold',
-                fontSize: 30
-              },
+                fontSize: 20,
+                },
+
               chatbubble: {
-                borderRadius: 70,
-                padding: 40
+                borderRadius: 30,
+                padding: 20
               }
             }
           }
