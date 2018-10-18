@@ -23,6 +23,9 @@ class App extends Component {
     }
   }
 
+
+
+
   componentDidMount() {
     this.scrollToBottom();
     let fetchData = () => {
@@ -44,11 +47,31 @@ class App extends Component {
     this.scrollToBottom();
   }
 
+highlightTxt(meg) {
+
+    var words = meg.split(" ");
+    var newBoldStr = "";
+    for (var i = 0; i < words.length; i++) {
+      if(words[i] == 'Addisons' || words[i] == 'Addison') {
+        console.log("hittar ord 'jag' ")
+        words[i] = "ADDISONS*";
+        newBoldStr = newBoldStr + " ";
+        newBoldStr = newBoldStr + words[i];
+      } else {
+        newBoldStr = newBoldStr + " ";
+        newBoldStr = newBoldStr + words[i];
+      }
+
+    }
+
+    return(newBoldStr);
+  }
+
   fill_state(d) {
     let new_transcriptions = [];
     let new_suggestions = [];
     for(var i = 0; i < d.length; i ++) {
-      let m = new Message( {id: d[i]['person'], message: d[i]['msg']})
+        let m = new Message( {id: d[i]['person'], message: this.highlightTxt(d[i]['msg'])});
       if (d[i]['person'] == 0) {
         m['senderName'] = 'Operator'
       }else {
@@ -71,8 +94,9 @@ class App extends Component {
     this.setState({transcriptions: new_transcriptions, bigpopa: new_suggestions});
   }
 
+
   render() {
-    console.log(this.state.transcriptions)
+    //console.log(this.state.transcriptions)
     return (
       <SplitterLayout>
         <div className="App">
