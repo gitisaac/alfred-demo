@@ -1,4 +1,4 @@
-# prins-alfred
+# alfred demo for SOS Alarm
 
 ### To run:
 
