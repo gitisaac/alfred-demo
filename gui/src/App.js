@@ -19,7 +19,7 @@ class App extends Component {
 
     this.state = {
       transcriptions: [],
-      bigpopa: []
+      suggestion: []
     }
   }
 
@@ -53,7 +53,6 @@ highlightTxt(meg) {
     var newBoldStr = "";
     for (var i = 0; i < words.length; i++) {
       if(words[i] == 'Addisons' || words[i] == 'Addison') {
-        console.log("hittar ord 'jag' ")
         words[i] = "ADDISONS*";
         newBoldStr = newBoldStr + " ";
         newBoldStr = newBoldStr + words[i];
@@ -80,18 +79,18 @@ highlightTxt(meg) {
       new_transcriptions.push(m);
 
       if (d[i]['msg'].includes('Addisons')) {
-        let newPopa = new Message({id: 0, message: "Notera: \n Addisons sjukdom \n - autoimun sjukdom"});
-        new_suggestions.push(newPopa);
-        let newPopaMore = new Message({id: 0, message: "Fråga om: \n - kortisolanvändning \n - kräkning/illamående"});
-        new_suggestions.push(newPopaMore);
+        let newSuggestion1 = new Message({id: 0, message: "Notera: \n Addisons sjukdom \n - autoimun sjukdom"});
+        new_suggestions.push(newSuggestion);
+        let newSuggestion2 = new Message({id: 0, message: "Fråga om: \n - kortisolanvändning \n - kräkning/illamående"});
+        new_suggestions.push(newSuggestion2);
       }else if (d[i]['msg'].includes('kräk')) {
-        let anotherOne = new Message({id: 0, message: "Kräkning har förekommit"});
-        new_suggestions.push(anotherOne);
+        let newSuggestion3 = new Message({id: 0, message: "Kräkning har förekommit"});
+        new_suggestions.push(newSuggestion3);
         let prio_1 = new Message({id: 0, message: "Prio 1 larm"});
         new_suggestions.push(prio_1)
       }
     };
-    this.setState({transcriptions: new_transcriptions, bigpopa: new_suggestions});
+    this.setState({transcriptions: new_transcriptions, suggestion: new_suggestions});
   }
 
 
@@ -133,7 +132,7 @@ highlightTxt(meg) {
             </Toolbar>
           </AppBar>
           <ChatFeed
-            messages={ this.state.bigpopa } // Boolean: list of message objects
+            messages={ this.state.suggestion } // Boolean: list of message objects
             isTyping={false} // Boolean: is the recipient typing
             hasInputField={false} // Boolean: use our input, or use your own
             showSenderName={true} // show the name of the user who sent the message
@@ -158,19 +157,5 @@ highlightTxt(meg) {
     );
   }
 }
-/*
-<div className="App" style={{border: "1px solid black"}}>
-  <TopAppBar
-    title='ALFRED'
-    navigationIcon={<MaterialIcon
-      icon='AI'
-      onClick={() => console.log('click')}
-    />}
-  >
-  </TopAppBar>
-
-    HELLO WORLD
-</div>
-*/
 
 export default App;
