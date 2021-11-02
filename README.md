@@ -1,6 +1,6 @@
 # alfred demo for SOS Alarm
 
-The demo is run by running the python script transcription_service.py and starting the react web gui.
+The demo is run by running the python script s2t_test.py and starting the react web gui.
 
 ![image](https://user-images.githubusercontent.com/11088347/139806543-1cc63e53-f501-4e8d-8359-c7225f544ace.png)
 
