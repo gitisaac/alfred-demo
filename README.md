@@ -1,5 +1,4 @@
 # alfred demo for SOS Alarm
 
-### To run:
+The demo is run by running the python script transcription_service.py and starting the react web gui.
 
-`python pizzaball.py`
